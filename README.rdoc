@@ -1,6 +1,6 @@
 Devise
 
-<h1>Step1：前置安裝 </h1>
+Step1：前置安裝
 gem ‘devise'
 rails g -h 看新增generator  
 rails g devise:install  然後按照指示設定
