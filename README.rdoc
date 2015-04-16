@@ -1,28 +1,45 @@
-== README
+Devise
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Step1：前置安裝
+gem ‘devise'
+rails g -h 看新增generator  
+rails g devise:install  然後按照指示設定
+rails g controller home index 
 
-Things you may want to cover:
+註：
+create config/initializers/devise.rb  是設定檔
+create config/locales/devise.en.yml  做多國語言用的
+config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+設定寄發使用者信件預設顯示的domain
 
-* Ruby version
+Step2：產生user model、table、routes
+rails g controller -h
+rails g devise -h   顯示Usage: rails generate devise NAME [options]  name 是table名，通常是user或admin
+rails g devise user  產生user model 跟table 跟routes: devise_for :users
+rake db:migrate
+rake routes 看新增路由
 
-* System dependencies
+Step3：新增註冊登入登出按鈕
 
-* Configuration
+application.html.erb加入
+<% if user_signed_in? %>
+歡迎！ <%= current_user.email %>
+<%= link_to '登出',destroy_user_session_path,method: :delete %>
+<% else %>
+<%= link_to '登入',new_user_session_path %>
+<%= link_to '註冊',new_user_registration_path %>
+<% end %>
 
-* Database creation
+Step3：限制使用者沒登入就只能瀏覽文章，不能動到資料庫
 
-* Database initialization
+rails g scaffold post title content:text
+rake db:migrate
 
-* How to run the test suite
+application.html.erb加入
+<%= link_to '文章列表',posts_path %>
+<%= link_to '新增文章',new_post_path %>
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+只要沒有登入就會導到登入頁面
+posts controller 加入 before_action :authenticate_user!
+讓使用者沒登入也能看，但不能更動資料庫
+before_action :authenticate_user!, only: [:new, :edit, :create,:update,:destroy]
