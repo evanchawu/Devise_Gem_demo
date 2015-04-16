@@ -1,6 +1,6 @@
 Devise
 
-Step1：前置安裝
+#Step1：前置安裝
 gem ‘devise'
 rails g -h 看新增generator  
 rails g devise:install  然後按照指示設定
@@ -12,14 +12,14 @@ create config/locales/devise.en.yml  做多國語言用的
 config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 設定寄發使用者信件預設顯示的domain
 
-Step2：產生user model、table、routes
+#Step2：產生user model、table、routes
 rails g controller -h
 rails g devise -h   顯示Usage: rails generate devise NAME [options]  name 是table名，通常是user或admin
 rails g devise user  產生user model 跟table 跟routes: devise_for :users
 rake db:migrate
 rake routes 看新增路由
 
-Step3：新增註冊登入登出按鈕
+#Step3：新增註冊登入登出按鈕
 
 application.html.erb加入
 <% if user_signed_in? %>
@@ -30,7 +30,7 @@ application.html.erb加入
 <%= link_to '註冊',new_user_registration_path %>
 <% end %>
 
-Step3：限制使用者沒登入就只能瀏覽文章，不能動到資料庫
+#Step4：限制使用者沒登入就只能瀏覽文章，不能動到資料庫
 
 rails g scaffold post title content:text
 rake db:migrate
